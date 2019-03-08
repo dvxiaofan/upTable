@@ -1,4 +1,3 @@
-
 let wb; //读取完成的数据
 
 function importf(obj) { //导入
@@ -18,7 +17,7 @@ function importf(obj) { //导入
         let sheetData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
         // console.log('sheetData: ', sheetData);
 
-        //wb.SheetNames[0]是获取Sheets中第一个Sheet的名字
+        //wb.SheetNames[0]是获取 Sheets 中第一个 Sheet的名字
         //wb.Sheets[Sheet名]获取第一个Sheet的数据
 
         let excelData = {
@@ -30,22 +29,16 @@ function importf(obj) { //导入
             if (sheetData.hasOwnProperty(key)) {
                 const element = sheetData[key];
 
-
-
                 excelData.x.push(Number(element.x));
                 excelData.y.push(Number(element.y));
             }
         }
-
+        // 转成json数据
         let jsonData = JSON.stringify(excelData);
 
-        console.log(jsonData);
-
-
-
-
-
+        console.log('jsonData', jsonData);
     };
 
     reader.readAsBinaryString(f);
 }
+
