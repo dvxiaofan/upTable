@@ -1,4 +1,11 @@
+
 let wb; //读取完成的数据
+// let chartData;
+
+let excelData = {
+    x: [],
+    y: []
+};
 
 function importf(obj) { //导入
     if (!obj.files) {
@@ -20,10 +27,6 @@ function importf(obj) { //导入
         //wb.SheetNames[0]是获取 Sheets 中第一个 Sheet的名字
         //wb.Sheets[Sheet名]获取第一个Sheet的数据
 
-        let excelData = {
-            x: [],
-            y: []
-        };
 
         for (const key in sheetData) {
             if (sheetData.hasOwnProperty(key)) {
@@ -34,11 +37,74 @@ function importf(obj) { //导入
             }
         }
         // 转成json数据
-        let jsonData = JSON.stringify(excelData);
+        // let jsonData = JSON.stringify(excelData);
 
-        console.log('jsonData', jsonData);
+        // console.log('jsonData', jsonData);
+
+        setMyChartData(excelData);
     };
 
     reader.readAsBinaryString(f);
 }
+
+function setMyChartData(chartData) {
+    let myChart = echarts.init(document.getElementById('echartDemo'));
+
+    let option = {
+        title: {
+            text: '河道断面'
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            data:['河道断面']
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : chartData.x
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                max: 1100
+            }
+        ],
+        series : [
+            {
+                name:'河道断面',
+                type:'line',
+                stack: '总量',
+                areaStyle: {},
+                data:chartData.y
+            }
+        ]
+    };
+    
+    
+    
+    myChart.setOption(option);
+}
+
+
 
